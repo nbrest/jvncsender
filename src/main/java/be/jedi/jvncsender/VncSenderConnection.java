@@ -1,16 +1,9 @@
-package com.tightvnc.vncviewer;
+package be.jedi.jvncsender;
 
-/* 
- * Please note:
- * we use the package com.tightvnc.vncviewer because then we don't have to change the visibility
- * of methods or variables
- * */
-
+import com.tightvnc.vncviewer.RfbProtoWrapper;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.Iterator;
-
-import be.jedi.jvncsender.VncMappings;
 
 //http://stackoverflow.com/questions/1248510/convert-string-to-keyevents
 //http://stackoverflow.com/questions/664896/get-the-vk-int-from-an-arbitrary-char-in-java
@@ -36,9 +29,13 @@ import be.jedi.jvncsender.VncMappings;
 //        System.out.println(context.selectInputMethod(Locale.ENGLISH));
 //        System.out.println(context.getLocale().getDisplayLanguage());
 
+/**
+ * This is the only class that interacts with the classes in the package com.tightvnc, and it does
+ * so through the class RfbProtoWrapper.
+ */
 public class VncSenderConnection {
 
-   RfbProto rfb;
+   RfbProtoWrapper rfb;
    String host = "localhost";
    int port = 5900;
    String passwordParam = "";
@@ -71,7 +68,7 @@ public class VncSenderConnection {
       // the for each get the sequence
       ArrayList<Integer> keys = VncSenderConnection.stringToKeyCodesList(sequence);
 
-      rfb.eventBufLen = 0;
+      rfb.setEventBufLen(0);
 
       boolean shift = false;
       boolean alt = false;
@@ -131,9 +128,9 @@ public class VncSenderConnection {
                rfb.writeKeyEvent(0xffe7, false);
                meta = false;
             }
-            rfb.os.write(rfb.eventBuf, 0, rfb.eventBufLen);
+            rfb.write(rfb.getEventBuf(), 0, rfb.getEventBufLen());
             //resetting the buffer
-            rfb.eventBufLen = 0;
+            rfb.setEventBufLen(0);
          }
 
          }
@@ -142,41 +139,40 @@ public class VncSenderConnection {
    }
 
    void sendInit() throws Exception {
-      rfb.os.write(0);
+      rfb.write(0);
 
    }
 
    void sendTest() throws Exception {
 
-      rfb.eventBufLen = 0;
+      rfb.setEventBufLen(0);
 
       rfb.writeKeyEvent(0xffe1, true);
       rfb.writeKeyEvent(KeyEvent.VK_L, true);
       // Shift Modifier down
       rfb.writeKeyEvent(0xffe1, false);
 
-      rfb.os.write(rfb.eventBuf, 0, rfb.eventBufLen);
+      rfb.write(rfb.getEventBuf(), 0, rfb.getEventBufLen());
 
       // rfb.eventBufLen=0;
       // rfb.writeKeyEvent( KeyEvent.KEY_RELEASED, true);
       // rfb.os.write(rfb.eventBuf, 0, rfb.eventBufLen);
 
-      rfb.eventBufLen = 0;
+      rfb.setEventBufLen(0);
       rfb.writeKeyEvent(KeyEvent.VK_I, true);
-      rfb.os.write(rfb.eventBuf, 0, rfb.eventBufLen);
+      rfb.write(rfb.getEventBuf(), 0, rfb.getEventBufLen());
 
-      rfb.eventBufLen = 0;
+      rfb.setEventBufLen(0);
 
       rfb.writeKeyEvent(0xffe1, true);
       rfb.writeKeyEvent(KeyEvent.VK_L, true);
       // Shift Modifier down
       rfb.writeKeyEvent(0xffe1, false);
-      rfb.os.write(rfb.eventBuf, 0, rfb.eventBufLen);
-
+      rfb.write(rfb.getEventBuf(), 0, rfb.getEventBufLen());
    }
 
    void sendClose() throws Exception {
-      rfb.os.flush();
+      rfb.flush();
 
       rfb.writeVersionMsg();
       rfb.close();
@@ -186,18 +182,18 @@ public class VncSenderConnection {
 
       showConnectionStatus("Connecting to " + host + ", port " + port + "...");
 
-      rfb = new RfbProto(host, port, null);
+      rfb = new RfbProtoWrapper(host, port, null);
       showConnectionStatus("Connected to server");
 
       rfb.readVersionMsg();
-      showConnectionStatus("RFB server supports protocol version " + rfb.serverMajor + "." + rfb.serverMinor);
+      showConnectionStatus("RFB server supports protocol version " + rfb.serverMajor() + "." + rfb.serverMinor());
 
       rfb.writeVersionMsg();
-      showConnectionStatus("Using RFB protocol version " + rfb.clientMajor + "." + rfb.clientMinor);
+      showConnectionStatus("Using RFB protocol version " + rfb.clientMajor() + "." + rfb.clientMinor());
 
       int secType = rfb.negotiateSecurity();
       int authType;
-      if (secType == RfbProto.SecTypeTight) {
+      if (secType == RfbProtoWrapper.SecTypeTight) {
          showConnectionStatus("Enabling TightVNC protocol extensions");
          rfb.setupTunneling();
          authType = rfb.negotiateAuthenticationTight();
@@ -206,11 +202,11 @@ public class VncSenderConnection {
       }
 
       switch (authType) {
-      case RfbProto.AuthNone:
+      case RfbProtoWrapper.AuthNone:
          showConnectionStatus("No authentication needed");
          rfb.authenticateNone();
          break;
-      case RfbProto.AuthVNC:
+      case RfbProtoWrapper.AuthVNC:
          showConnectionStatus("Performing standard VNC authentication");
          if (passwordParam != null) {
             try {

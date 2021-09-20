@@ -1,7 +1,6 @@
 package be.jedi.jvncsender;
 
 import com.google.common.collect.ImmutableList;
-import com.tightvnc.vncviewer.VncSenderConnection;
 
 public class VncSender {
 
