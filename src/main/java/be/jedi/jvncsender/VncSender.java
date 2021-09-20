@@ -1,6 +1,6 @@
 package be.jedi.jvncsender;
 
-import com.google.common.collect.ImmutableList;
+import java.util.Arrays;
 
 public class VncSender {
 
@@ -25,7 +25,7 @@ public class VncSender {
    }
 
    public void sendText(String... vncText) {
-      sendText(ImmutableList.copyOf(vncText));
+      sendText(Arrays.asList(vncText));
    }
 
    public void sendText(Iterable<String> vncText) {
