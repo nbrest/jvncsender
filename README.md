@@ -1,3 +1,8 @@
+- Forked from: https://github.com/jsundqvist/jvncsender
+
+Original README.txt:
+---------------------
+
 Please note that jvncsender uses:
 
 - http://www.tightvnc.com/
