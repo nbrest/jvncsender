@@ -30,7 +30,7 @@
     <!-- Updated : 2021/09 | Dependency version date: 2021/02 -->
     <junit.jupiter.version>5.8.0-M1</junit.jupiter.version>
 
-    <!-- Updated : 2021/09 | Dependency version date: 2021/02 -->
+    <!-- Updated : 2021/09 | Dependency version date: https://www.tightvnc.com/download-old.php -->
     <tightvnc.vncviewer.version>1.3.10</tightvnc.vncviewer.version>
 
   </properties>
