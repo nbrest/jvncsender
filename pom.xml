@@ -30,9 +30,25 @@
     <!-- Updated : 2021/09 | Dependency version date: 2021/02 -->
     <junit.jupiter.version>5.8.0-M1</junit.jupiter.version>
 
+    <!-- Updated : 2021/09 | Dependency version date: 2021/02 -->
+    <tightvnc.vncviewer.version>1.3.10</tightvnc.vncviewer.version>
+
   </properties>
 
+  <repositories>
+    <repository>
+      <id>local-maven-repo</id>
+      <url>file:///${project.basedir}/local-maven-repo</url>
+    </repository>
+  </repositories>
+
   <dependencies>
+
+    <dependency>
+      <groupId>com.tightvnc</groupId>
+      <artifactId>vncviewer</artifactId>
+      <version>${tightvnc.vncviewer.version}</version>
+    </dependency>
 
     <dependency>
       <groupId>commons-cli</groupId>
