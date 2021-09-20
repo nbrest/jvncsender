@@ -7,91 +7,89 @@ import java.io.IOException;
  *
  * @author nbrest
  */
-public class RfbProtoWrapper {
+public class RfbProtoWrapper extends RfbProto {
 
   public static final int SecTypeTight = RfbProto.SecTypeTight;
   public static final int AuthNone = RfbProto.AuthNone;
   public static final int AuthVNC = RfbProto.AuthVNC;
 
-  RfbProto rfbProto;
-
-  public RfbProtoWrapper(String h, int p, VncViewer v) throws IOException {
-    rfbProto = new RfbProto(h, p, v);
+  public RfbProtoWrapper(String host, int port, VncViewer vncViewer) throws IOException {
+    super(host, port, vncViewer);
   }
 
   public void setEventBufLen(int eventBufLen) {
-    rfbProto.eventBufLen = eventBufLen;
+    this.eventBufLen = eventBufLen;
   }
 
   public void writeKeyEvent(Integer key, boolean down) {
-    rfbProto.writeKeyEvent(key, down);
+    super.writeKeyEvent(key, down);
   }
 
   public void write(int b) throws IOException {
-    rfbProto.os.write(b);
+    super.os.write(b);
   }
 
   public void write(byte[] payload, int offset, int length) throws IOException {
-    rfbProto.os.write(payload, offset, length);
+    super.os.write(payload, offset, length);
   }
 
   public byte[] getEventBuf() {
-    return rfbProto.eventBuf;
+    return super.eventBuf;
   }
 
   public int getEventBufLen() {
-    return rfbProto.eventBufLen;
+    return super.eventBufLen;
   }
 
   public void flush() throws IOException {
-    rfbProto.os.flush();
+    super.os.flush();
   }
 
-  public void close() throws IOException {
-    rfbProto.os.close();
+  public void osClose() throws IOException {
+    super.os.close();
   }
 
   public void writeVersionMsg() throws IOException {
-    rfbProto.writeVersionMsg();
+    super.writeVersionMsg();
   }
 
   public void readVersionMsg() throws Exception {
-    rfbProto.readVersionMsg();
+    super.readVersionMsg();
   }
 
   public int serverMajor() {
-    return rfbProto.serverMajor;
+    return super.serverMajor;
   }
 
   public int serverMinor() {
-    return rfbProto.serverMinor;
+    return super.serverMinor;
   }
 
   public int clientMajor() {
-    return rfbProto.clientMajor;
+    return super.clientMajor;
   }
 
   public int clientMinor() {
-    return rfbProto.clientMinor;
+    return super.clientMinor;
   }
 
   public int negotiateSecurity() throws Exception {
-    return rfbProto.negotiateSecurity();
+    return super.negotiateSecurity();
   }
 
   public void setupTunneling() throws IOException {
-    rfbProto.setupTunneling();
+    super.setupTunneling();
   }
 
   public int negotiateAuthenticationTight() throws Exception {
-    return rfbProto.negotiateAuthenticationTight();
+    return super.negotiateAuthenticationTight();
   }
 
   public void authenticateNone() throws Exception {
-    rfbProto.authenticateNone();
+    super.authenticateNone();
   }
 
   public void authenticateVNC(String password) throws Exception {
-    rfbProto.authenticateVNC(password);
+    super.authenticateVNC(password);
   }
 }

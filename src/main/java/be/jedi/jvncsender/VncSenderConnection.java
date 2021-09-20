@@ -5,30 +5,6 @@ import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.Iterator;
 
-//http://stackoverflow.com/questions/1248510/convert-string-to-keyevents
-//http://stackoverflow.com/questions/664896/get-the-vk-int-from-an-arbitrary-char-in-java
-
-// loadkeys us -> on the server does the trick -> default to US on CDBOOT
-
-//	    Locale locale = Locale.getDefault();
-//        System.out.println("Before setting, Locale is = " + locale);
-//        // Setting default locale    
-//  	  System.out.println(KeyEvent.VK_L);
-//  	  
-//        locale = new Locale("nl","BE");
-//        Locale.setDefault(locale);
-//        System.out.println("After setting, Locale is = " + locale);
-//
-//  	  System.out.println(KeyEvent.VK_L);
-
-//  http://stackoverflow.com/questions/834758/preserving-keyboard-layout-in-a-jtextfield
-// http://forums.sun.com/thread.jspa?threadID=762425	
-//        InputContext context=InputContext.getInstance();
-//        System.out.println(context.getLocale().getCountry());
-//        
-//        System.out.println(context.selectInputMethod(Locale.ENGLISH));
-//        System.out.println(context.getLocale().getDisplayLanguage());
-
 /**
  * This is the only class that interacts with the classes in the package com.tightvnc, and it does
  * so through the class RfbProtoWrapper.
@@ -44,7 +20,6 @@ public class VncSenderConnection {
       this.host = host;
       this.port = port;
       this.passwordParam = password;
-
    }
 
    public void open() throws Exception {
@@ -175,7 +150,7 @@ public class VncSenderConnection {
       rfb.flush();
 
       rfb.writeVersionMsg();
-      rfb.close();
+      rfb.osClose();
    }
 
    void connectAndAuthenticate() throws Exception {
@@ -299,11 +274,33 @@ public class VncSenderConnection {
             // Pop the character.
             parseString = parseString.substring(1);
          }
-
       }
 
       return finalSequence;
-
    }
+
+//http://stackoverflow.com/questions/1248510/convert-string-to-keyevents
+//http://stackoverflow.com/questions/664896/get-the-vk-int-from-an-arbitrary-char-in-java
+
+// loadkeys us -> on the server does the trick -> default to US on CDBOOT
+
+//	    Locale locale = Locale.getDefault();
+//        System.out.println("Before setting, Locale is = " + locale);
+//        // Setting default locale
+//  	  System.out.println(KeyEvent.VK_L);
+//
+//        locale = new Locale("nl","BE");
+//        Locale.setDefault(locale);
+//        System.out.println("After setting, Locale is = " + locale);
+//
+//  	  System.out.println(KeyEvent.VK_L);
+
+//  http://stackoverflow.com/questions/834758/preserving-keyboard-layout-in-a-jtextfield
+// http://forums.sun.com/thread.jspa?threadID=762425
+//        InputContext context=InputContext.getInstance();
+//        System.out.println(context.getLocale().getCountry());
+//
+//        System.out.println(context.selectInputMethod(Locale.ENGLISH));
+//        System.out.println(context.getLocale().getDisplayLanguage());
 
 }
