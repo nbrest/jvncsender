@@ -86,6 +86,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>
+        <version>${compiler.plugin.version}</version>
         <configuration>
           <!-- Removes compiler warnings about java version in eclipse -->
           <source>${java.target.version}</source>
