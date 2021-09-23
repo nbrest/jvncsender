@@ -9,7 +9,7 @@ public class VncSenderMainTest {
     String[] args = {
         "-host", "niko-w",
         "-port", "5900",
-        "-text", "madamada",
+        "-text", "<ESC>",
         "-password", ""
     };
     VncSenderMain.main(args);

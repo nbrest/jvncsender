@@ -42,6 +42,7 @@
   <dependencies>
 
     <dependency>
+      <!-- stored in local-maven-repo -->
       <groupId>com.tightvnc</groupId>
       <artifactId>vncviewer</artifactId>
       <version>${tightvnc.vncviewer.version}</version>
