@@ -49,6 +49,7 @@ public class VncSenderConnection {
       boolean alt = false;
       boolean control = false;
       boolean meta = false;
+      boolean windowsKey = false;
 
 //      //reset modifiers
 //      rfb.writeKeyEvent(0xffe1, false);
@@ -79,6 +80,10 @@ public class VncSenderConnection {
             meta = true;
             rfb.writeKeyEvent(key, true);
             break;
+         case 0xffeb:
+            windowsKey = true;
+            rfb.writeKeyEvent(key, true);
+            break;
          default: {
 
         	//Key Press
@@ -102,6 +107,10 @@ public class VncSenderConnection {
             if (meta) {
                rfb.writeKeyEvent(0xffe7, false);
                meta = false;
+            }
+            if (windowsKey) {
+               windowsKey = false;
+               rfb.writeKeyEvent(0xffeb, false);
             }
             rfb.write(rfb.getEventBuf(), 0, rfb.getEventBufLen());
             //resetting the buffer
@@ -223,6 +232,7 @@ public class VncSenderConnection {
                finalSequence.add(code);
                found = true;
                match = modifier;
+               System.out.println("Found modifier key " + modifier);
             }
          }
 
@@ -236,6 +246,7 @@ public class VncSenderConnection {
                finalSequence.add(b);
                found = true;
                match = specialKey;
+               System.out.println("Found special key " + specialKey);
 
             }
          }
@@ -251,6 +262,7 @@ public class VncSenderConnection {
                }
                found = true;
                match = sequence;
+               System.out.println("Found sequence key " + sequence);
             }
          }
 
@@ -276,6 +288,7 @@ public class VncSenderConnection {
          }
       }
 
+      System.out.println("Final sequence: " + finalSequence.toString());
       return finalSequence;
    }
 

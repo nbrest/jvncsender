@@ -10,6 +10,7 @@ public class VncMappings {
    public static final Map<String, Integer> SPECIAL_KEYMAP = createSpecialKeyMap();
    public static final Map<String, Integer> MODIFIER_MAP = createModifierMap();
    public static final Map<String, Integer[]> SEQUENCES_MAP = createSequencesMap();
+   public static final int WINDOWS_KEY = 0xffeb;
 
    static void printMaps() {
       for (String key : KEYMAP.keySet()) {
@@ -216,7 +217,6 @@ public class VncMappings {
       specialKeyMap.put("<TAB>", KeyEvent.VK_TAB);
       specialKeyMap.put("<UNDEFINIED>", KeyEvent.VK_UNDEFINED);
       specialKeyMap.put("<UNDO>", KeyEvent.VK_UNDO);
-      specialKeyMap.put("<WINDOWS>", KeyEvent.VK_WINDOWS);
 
       return specialKeyMap;
    }
@@ -239,6 +239,7 @@ public class VncMappings {
       // builder.put("<ALT>", KeyEvent.VK_ALT);
       // builder.put("<CONTROL>", KeyEvent.VK_CONTROL);
       // builder.put("<META>", KeyEvent.VK_META);
+      modifierMap.put("<WINDOWS>", WINDOWS_KEY);
 
       return modifierMap;
 
