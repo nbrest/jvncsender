@@ -216,6 +216,7 @@ public class VncMappings {
       specialKeyMap.put("<TAB>", KeyEvent.VK_TAB);
       specialKeyMap.put("<UNDEFINIED>", KeyEvent.VK_UNDEFINED);
       specialKeyMap.put("<UNDO>", KeyEvent.VK_UNDO);
+      specialKeyMap.put("<WINDOWS>", KeyEvent.VK_WINDOWS);
 
       return specialKeyMap;
    }
