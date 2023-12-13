@@ -23,7 +23,7 @@ mvn clean install
 export RELEASE_VERSION=X.XX
 git checkout master
 git merge master dev
-git push origin mater
+git push origin master
 git tag -a v${RELEASE_VERSION} -m "Release v${RELEASE_VERSION}"
 git push origin v${RELEASE_VERSION}
 git checkout dev
