@@ -1,5 +1,34 @@
 - Forked from: https://github.com/jsundqvist/jvncsender
 
+## Install new release version
+
+- To be picked up as a maven dependency in other projects
+```sh
+mvn clean install
+```
+```xml
+    <dependency>
+      <groupId>be.jedi</groupId>
+      <artifactId>jvncsender</artifactId>
+      <version>${jvncsender.version}</version>
+    </dependency>
+```
+- Update local-maven-repo in kamehouse with the latest version following the instructions in kamehouse cmd README.md
+
+## Create new release version
+
+- On dev branch update ${RELEASE_VERSION} in `<version>` in pom.xml, commit and push
+- Then run:
+```sh
+export RELEASE_VERSION=X.XX
+git checkout master
+git merge master dev
+git push origin mater
+git tag -a v${RELEASE_VERSION} -m "Release v${RELEASE_VERSION}"
+git push origin v${RELEASE_VERSION}
+git checkout dev
+```
+
 Original README.txt:
 ---------------------
 

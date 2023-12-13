@@ -6,11 +6,11 @@
 
   <groupId>be.jedi</groupId>
   <artifactId>jvncsender</artifactId>
-  <version>1.00-SNAPSHOT</version>
+  <version>1.01-SNAPSHOT</version>
   <name>jvncsender</name>
 
   <properties>
-    <java.target.version>11</java.target.version>
+    <java.target.version>17</java.target.version>
     <maven.compiler.source>${java.target.version}</maven.compiler.source>
     <maven.compiler.target>${java.target.version}</maven.compiler.target>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
