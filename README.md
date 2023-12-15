@@ -42,6 +42,10 @@ git checkout dev
 
 # Changelog:
 
+#### v1.04
+
+- Updated logback configuration to hide initial logback setup messages
+
 #### v1.03
 
 - Added logging framework and updated logging
