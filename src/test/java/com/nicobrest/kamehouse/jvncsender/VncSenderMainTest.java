@@ -1,4 +1,4 @@
-package be.jedi.jvncsender;
+package com.nicobrest.kamehouse.jvncsender;
 
 import org.junit.jupiter.api.Test;
 
@@ -14,5 +14,4 @@ public class VncSenderMainTest {
     };
     VncSenderMain.main(args);
   }
-  //
 }

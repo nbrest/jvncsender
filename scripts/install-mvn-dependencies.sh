@@ -1,3 +1,4 @@
+#!/bin/bash
 
 # Only need to run this once to install the jar into my local-maven-repo folder. 
 # Once it's there, it will be picked up in the pom's dependencies

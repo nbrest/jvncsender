@@ -1,6 +1,9 @@
 package com.tightvnc.vncviewer;
 
+import java.awt.event.MouseEvent;
 import java.io.IOException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Wrapper class to access RfbProto functionality outside com.tightvnc.vncviewer package.
@@ -8,6 +11,8 @@ import java.io.IOException;
  * @author nbrest
  */
 public class RfbProtoWrapper extends RfbProto {
+
+  private final static Logger logger = LoggerFactory.getLogger(RfbProtoWrapper.class);
 
   public static final int SecTypeTight = RfbProto.SecTypeTight;
   public static final int AuthNone = RfbProto.AuthNone;
@@ -91,5 +96,32 @@ public class RfbProtoWrapper extends RfbProto {
 
   public void authenticateVNC(String password) throws Exception {
     super.authenticateVNC(password);
+  }
+
+  public void writePointerEvent(MouseEvent evt) throws IOException {
+    super.writePointerEvent(evt);
+  }
+
+  /**
+   * Override to avoid system out logging.
+   */
+  @Override
+  void readSecurityResult(String authType) throws Exception {
+    int securityResult = this.readU32();
+    switch (securityResult) {
+      case 0:
+        logger.debug(authType + ": success");
+        return;
+      case 1:
+        if (this.clientMinor >= 8) {
+          this.readConnFailedReason();
+        }
+
+        throw new Exception(authType + ": failed");
+      case 2:
+        throw new Exception(authType + ": failed, too many tries");
+      default:
+        throw new Exception(authType + ": unknown result " + securityResult);
+    }
   }
 }
