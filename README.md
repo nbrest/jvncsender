@@ -12,6 +12,10 @@
 ./scripts/run-jvncsender.sh
 ```
 
+## Debug:
+
+- In IntelliJ create a new run configuration for VncSenderMain.main() and set the necessary command line arguments
+
 ## Usage:
 
 ```sh

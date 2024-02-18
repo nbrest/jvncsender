@@ -1,7 +1,9 @@
 package com.nicobrest.kamehouse.jvncsender;
 
 import com.tightvnc.vncviewer.RfbProtoWrapper;
+import com.tightvnc.vncviewer.VncViewerWrapper;
 import java.awt.Button;
+import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.io.IOException;
@@ -22,8 +24,8 @@ public class VncSenderConnection {
   private final static Logger logger = LoggerFactory.getLogger(VncSenderConnection.class);
 
   RfbProtoWrapper rfb;
-  String host = "localhost";
-  int port = 5900;
+  String host;
+  int port;
   String passwordParam = "";
 
   public VncSenderConnection(String host, int port, String password) {
@@ -35,11 +37,21 @@ public class VncSenderConnection {
   /**
    * Left mouse click.
    */
-  public void mouseClick(int xPosition, int yPosition, int clickCount) throws IOException {
-    MouseEvent mouseEvent = new MouseEvent(new Button(), 1,
-        Calendar.getInstance().getTimeInMillis(), 0, xPosition, yPosition, clickCount,
-        false, 1);
-    rfb.writePointerEvent(mouseEvent);
+  public void mouseClick(int positionX, int positionY, int clickCount) throws IOException {
+    for (int i = 0; i < clickCount; i++) {
+      MouseEvent mousePressEvent = new MouseEvent(new Button(),
+          MouseEvent.MOUSE_PRESSED,
+          Calendar.getInstance().getTimeInMillis(), InputEvent.getMaskForButton(MouseEvent.BUTTON1),
+          positionX, positionY, 1,
+          true, MouseEvent.BUTTON1);
+      rfb.writePointerEvent(mousePressEvent);
+      MouseEvent mouseReleaseEvent = new MouseEvent(new Button(),
+          MouseEvent.MOUSE_RELEASED,
+          Calendar.getInstance().getTimeInMillis(), InputEvent.getMaskForButton(MouseEvent.BUTTON1),
+          positionX, positionY, 1,
+          true, MouseEvent.BUTTON1);
+      rfb.writePointerEvent(mouseReleaseEvent);
+    }
     logger.debug("Sent mouse click");
   }
 
@@ -188,7 +200,9 @@ public class VncSenderConnection {
 
     showConnectionStatus("Connecting to " + host + ", port " + port + "...");
 
-    rfb = new RfbProtoWrapper(host, port, null);
+    VncViewerWrapper vncViewer = new VncViewerWrapper(host, port, passwordParam);
+    rfb = new RfbProtoWrapper(host, port, vncViewer);
+    vncViewer.setRfb(rfb);
     showConnectionStatus("Connected to server");
 
     rfb.readVersionMsg();

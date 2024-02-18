@@ -86,7 +86,7 @@ public class VncSenderMain {
     options.addOption(text);
 
     Option mouseClick = OptionBuilder.withArgName("mouseClick").hasArgs()
-        .withDescription("xPosition,yPosition,numberOfClicks").create("mouseClick");
+        .withDescription("positionX,positionY,numberOfClicks").create("mouseClick");
     text.setRequired(false);
     options.addOption(mouseClick);
 

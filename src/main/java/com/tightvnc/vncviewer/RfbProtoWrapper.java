@@ -99,8 +99,59 @@ public class RfbProtoWrapper extends RfbProto {
   }
 
   public void writePointerEvent(MouseEvent evt) throws IOException {
-    super.writePointerEvent(evt);
+    int modifiers = evt.getModifiers();
+    int mask2 = 2;
+    int mask3 = 4;
+    if (this.viewer != null && this.viewer.options != null
+        && this.viewer.options.reverseMouseButtons2And3) {
+      mask2 = 4;
+      mask3 = 2;
+    }
+
+    if (evt.getID() == 501) {
+      if ((modifiers & 8) != 0) {
+        this.pointerMask = mask2;
+        modifiers &= -9;
+      } else if ((modifiers & 4) != 0) {
+        this.pointerMask = mask3;
+        modifiers &= -5;
+      } else {
+        this.pointerMask = 1;
+      }
+    } else if (evt.getID() == 502) {
+      this.pointerMask = 0;
+      if ((modifiers & 8) != 0) {
+        modifiers &= -9;
+      } else if ((modifiers & 4) != 0) {
+        modifiers &= -5;
+      }
+    }
+
+    this.eventBufLen = 0;
+    this.writeModifierKeyEvents(modifiers);
+    int x = evt.getX();
+    int y = evt.getY();
+    if (x < 0) {
+      x = 0;
+    }
+
+    if (y < 0) {
+      y = 0;
+    }
+
+    this.eventBuf[this.eventBufLen++] = 5;
+    this.eventBuf[this.eventBufLen++] = (byte) this.pointerMask;
+    this.eventBuf[this.eventBufLen++] = (byte) (x >> 8 & 255);
+    this.eventBuf[this.eventBufLen++] = (byte) (x & 255);
+    this.eventBuf[this.eventBufLen++] = (byte) (y >> 8 & 255);
+    this.eventBuf[this.eventBufLen++] = (byte) (y & 255);
+    if (this.pointerMask == 0) {
+      this.writeModifierKeyEvents(0);
+    }
+
+    this.os.write(this.eventBuf, 0, this.eventBufLen);
   }
+
 
   /**
    * Override to avoid system out logging.
