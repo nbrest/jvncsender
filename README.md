@@ -46,6 +46,10 @@ git checkout dev
 
 # Changelog:
 
+#### v1.05
+
+- Fixed left mouse click
+
 #### v1.04
 
 - Updated logback configuration to hide initial logback setup messages
