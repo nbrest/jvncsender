@@ -37,19 +37,34 @@ public class VncSenderConnection {
   /**
    * Left mouse click.
    */
-  public void mouseClick(int positionX, int positionY, int clickCount) throws IOException {
+  public void mouseLeftClick(int positionX, int positionY, int clickCount) throws IOException {
+    mouseClick(positionX, positionY, clickCount, MouseEvent.BUTTON1);
+  }
+
+  /**
+   * Right mouse click.
+   */
+  public void mouseRightClick(int positionX, int positionY, int clickCount) throws IOException {
+    mouseClick(positionX, positionY, clickCount, MouseEvent.BUTTON3);
+  }
+
+  /**
+   * Send mouse click.
+   */
+  public void mouseClick(int positionX, int positionY, int clickCount, int mouseButton)
+      throws IOException {
     for (int i = 0; i < clickCount; i++) {
       MouseEvent mousePressEvent = new MouseEvent(new Button(),
           MouseEvent.MOUSE_PRESSED,
-          Calendar.getInstance().getTimeInMillis(), InputEvent.getMaskForButton(MouseEvent.BUTTON1),
+          Calendar.getInstance().getTimeInMillis(), InputEvent.getMaskForButton(mouseButton),
           positionX, positionY, 1,
-          true, MouseEvent.BUTTON1);
+          true, mouseButton);
       rfb.writePointerEvent(mousePressEvent);
       MouseEvent mouseReleaseEvent = new MouseEvent(new Button(),
           MouseEvent.MOUSE_RELEASED,
-          Calendar.getInstance().getTimeInMillis(), InputEvent.getMaskForButton(MouseEvent.BUTTON1),
+          Calendar.getInstance().getTimeInMillis(), InputEvent.getMaskForButton(mouseButton),
           positionX, positionY, 1,
-          true, MouseEvent.BUTTON1);
+          true, mouseButton);
       rfb.writePointerEvent(mouseReleaseEvent);
     }
     logger.debug("Sent mouse click");

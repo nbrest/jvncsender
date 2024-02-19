@@ -37,7 +37,8 @@ public class VncSenderMain {
       String vncHost = sender.cmdLine.getOptionValue("host");
       String vncPassword = sender.cmdLine.getOptionValue("password");
       Integer vncPort = Integer.parseInt(sender.cmdLine.getOptionValue("port"));
-      String vncMouseClick = sender.cmdLine.getOptionValue("mouseClick");
+      String vncMouseLeftClick = sender.cmdLine.getOptionValue("mouseLeftClick");
+      String vncMouseRightClick = sender.cmdLine.getOptionValue("mouseRightClick");
 
       VncSender vncSender = new VncSender(vncHost, vncPort, vncPassword);
 
@@ -45,13 +46,21 @@ public class VncSenderMain {
         vncSender.setVncWaitTime(Integer.parseInt(sender.cmdLine.getOptionValue("wait")));
       }
 
-      if (vncMouseClick != null) {
-        String[] mouseClickParams = vncMouseClick.split(",");
+      if (vncMouseLeftClick != null) {
+        String[] mouseClickParams = vncMouseLeftClick.split(",");
         int positionX = Integer.parseInt(mouseClickParams[0]);
         int positionY = Integer.parseInt(mouseClickParams[1]);
         int clickCount = Integer.parseInt(mouseClickParams[2]);
-        vncSender.sendMouseClick(positionX, positionY, clickCount);
-      } else {
+        vncSender.sendMouseLeftClick(positionX, positionY, clickCount);
+      }
+      if (vncMouseRightClick != null) {
+        String[] mouseClickParams = vncMouseRightClick.split(",");
+        int positionX = Integer.parseInt(mouseClickParams[0]);
+        int positionY = Integer.parseInt(mouseClickParams[1]);
+        int clickCount = Integer.parseInt(mouseClickParams[2]);
+        vncSender.sendMouseRightClick(positionX, positionY, clickCount);
+      }
+      if (vncText != null) {
         vncSender.sendText(vncText);
       }
       logger.trace("Finished executing main jvncsender");
@@ -85,10 +94,15 @@ public class VncSenderMain {
     text.setRequired(false);
     options.addOption(text);
 
-    Option mouseClick = OptionBuilder.withArgName("mouseClick").hasArgs()
-        .withDescription("positionX,positionY,numberOfClicks").create("mouseClick");
+    Option mouseLeftClick = OptionBuilder.withArgName("clickParams").hasArgs()
+        .withDescription("positionX,positionY,numberOfClicks").create("mouseLeftClick");
     text.setRequired(false);
-    options.addOption(mouseClick);
+    options.addOption(mouseLeftClick);
+
+    Option mouseRightClick = OptionBuilder.withArgName("clickParams").hasArgs()
+        .withDescription("positionX,positionY,numberOfClicks").create("mouseRightClick");
+    text.setRequired(false);
+    options.addOption(mouseRightClick);
 
     Option help = new Option("help", "print this message");
     options.addOption(help);
@@ -107,8 +121,8 @@ public class VncSenderMain {
 
     formatter
         .printHelp(
-            "java -jar jvncsender.jar [-list] [-help] -host <hostname> -port <port> -text <text> [-password <password>] [-wait <seconds>]",
-            "", options,
+            "java -jar jvncsender.jar options",
+            "Options:", options,
             "\ntext can also take special keys f.i. like \"linux ks=ks.cfg<RETURN>\"\n use -list options to see all keymappings	\n");
   }
 
@@ -141,15 +155,11 @@ public class VncSenderMain {
       // parse the command line arguments
       cmdLine = parser.parse(options, args);
 
-      if (cmdLine.hasOption("mouseClick")) {
-        String mouseClick = cmdLine.getOptionValue("mouseClick");
-        if (!mouseClick.matches("\\d+,\\d+,\\d+")) {
-          logger.error("Invalid mouseClick option value: " + mouseClick);
-          System.exit(-1);
-        }
+      if (hasMouseClick()) {
+        validateMouseClick();
       } else {
         if (!cmdLine.hasOption("text")) {
-          logger.error("Either mouseClick or text need to be passed as arguments");
+          logger.error("Either mouse[Left|Right]Click or text need to be passed as arguments");
           System.exit(-1);
         }
       }
@@ -163,5 +173,20 @@ public class VncSenderMain {
       System.exit(-1);
     }
 
+  }
+
+  private boolean hasMouseClick() {
+    return cmdLine.hasOption("mouseLeftClick") || cmdLine.hasOption("mouseRightClick");
+  }
+
+  private void validateMouseClick() {
+    String mouseClick = cmdLine.getOptionValue("mouseLeftClick");
+    if (mouseClick == null) {
+      mouseClick = cmdLine.getOptionValue("mouseRightClick");
+    }
+    if (!mouseClick.matches("\\d+,\\d+,\\d+")) {
+      logger.error("Invalid mouse[Left|Right]Click option value: " + mouseClick);
+      System.exit(-1);
+    }
   }
 }
