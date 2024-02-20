@@ -1,5 +1,6 @@
 package com.nicobrest.kamehouse.jvncsender;
 
+import java.util.Locale;
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.CommandLineParser;
 import org.apache.commons.cli.GnuParser;
@@ -37,8 +38,7 @@ public class VncSenderMain {
       String vncHost = sender.cmdLine.getOptionValue("host");
       String vncPassword = sender.cmdLine.getOptionValue("password");
       Integer vncPort = Integer.parseInt(sender.cmdLine.getOptionValue("port"));
-      String vncMouseLeftClick = sender.cmdLine.getOptionValue("mouseLeftClick");
-      String vncMouseRightClick = sender.cmdLine.getOptionValue("mouseRightClick");
+      String vncMouseClick = sender.cmdLine.getOptionValue("mouseClick");
 
       VncSender vncSender = new VncSender(vncHost, vncPort, vncPassword);
 
@@ -46,19 +46,13 @@ public class VncSenderMain {
         vncSender.setVncWaitTime(Integer.parseInt(sender.cmdLine.getOptionValue("wait")));
       }
 
-      if (vncMouseLeftClick != null) {
-        String[] mouseClickParams = vncMouseLeftClick.split(",");
-        int positionX = Integer.parseInt(mouseClickParams[0]);
-        int positionY = Integer.parseInt(mouseClickParams[1]);
-        int clickCount = Integer.parseInt(mouseClickParams[2]);
-        vncSender.sendMouseLeftClick(positionX, positionY, clickCount);
-      }
-      if (vncMouseRightClick != null) {
-        String[] mouseClickParams = vncMouseRightClick.split(",");
-        int positionX = Integer.parseInt(mouseClickParams[0]);
-        int positionY = Integer.parseInt(mouseClickParams[1]);
-        int clickCount = Integer.parseInt(mouseClickParams[2]);
-        vncSender.sendMouseRightClick(positionX, positionY, clickCount);
+      if (vncMouseClick != null) {
+        String[] mouseClickParams = vncMouseClick.split(",");
+        MouseButton mouseButton = MouseButton.valueOf(mouseClickParams[0].toUpperCase(Locale.ROOT));
+        int positionX = Integer.parseInt(mouseClickParams[1]);
+        int positionY = Integer.parseInt(mouseClickParams[2]);
+        int clickCount = Integer.parseInt(mouseClickParams[3]);
+        vncSender.sendMouseClick(mouseButton, positionX, positionY, clickCount);
       }
       if (vncText != null) {
         vncSender.sendText(vncText);
@@ -94,15 +88,10 @@ public class VncSenderMain {
     text.setRequired(false);
     options.addOption(text);
 
-    Option mouseLeftClick = OptionBuilder.withArgName("clickParams").hasArgs()
-        .withDescription("positionX,positionY,numberOfClicks").create("mouseLeftClick");
+    Option mouseClick = OptionBuilder.withArgName("clickParams").hasArgs()
+        .withDescription("[LEFT|RIGHT],positionX,positionY,numberOfClicks").create("mouseClick");
     text.setRequired(false);
-    options.addOption(mouseLeftClick);
-
-    Option mouseRightClick = OptionBuilder.withArgName("clickParams").hasArgs()
-        .withDescription("positionX,positionY,numberOfClicks").create("mouseRightClick");
-    text.setRequired(false);
-    options.addOption(mouseRightClick);
+    options.addOption(mouseClick);
 
     Option help = new Option("help", "print this message");
     options.addOption(help);
@@ -176,16 +165,13 @@ public class VncSenderMain {
   }
 
   private boolean hasMouseClick() {
-    return cmdLine.hasOption("mouseLeftClick") || cmdLine.hasOption("mouseRightClick");
+    return cmdLine.hasOption("mouseClick");
   }
 
   private void validateMouseClick() {
-    String mouseClick = cmdLine.getOptionValue("mouseLeftClick");
-    if (mouseClick == null) {
-      mouseClick = cmdLine.getOptionValue("mouseRightClick");
-    }
-    if (!mouseClick.matches("\\d+,\\d+,\\d+")) {
-      logger.error("Invalid mouse[Left|Right]Click option value: " + mouseClick);
+    String mouseClick = cmdLine.getOptionValue("mouseClick");
+    if (!mouseClick.matches("(LEFT|RIGHT),\\d+,\\d+,\\d+")) {
+      logger.error("Invalid mouseClick option value: " + mouseClick);
       System.exit(-1);
     }
   }

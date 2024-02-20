@@ -21,15 +21,14 @@
 ```sh
 usage: java -jar jvncsender.jar options
 Options:
- -host <hostname>                 hostname or ip-address to send it to
- -port <port>                     port to connect to f.i. 5900
- -password <password>             password to use
- -wait <seconds>                  seconds to wait in between sending different texts (default=1s)
- -text <text>                     text to send, (can be use multiple times)
- -mouseLeftClick <clickParams>    positionX,positionY,numberOfClicks
- -mouseRightClick <clickParams>   positionX,positionY,numberOfClicks
- -help                            print this message
- -list                            list keymappings
+ -host <hostname>            hostname or ip-address to send it to
+ -port <port>                port to connect to f.i. 5900
+ -password <password>        password to use
+ -wait <seconds>             seconds to wait in between sending different texts (default=1s)
+ -text <text>                text to send, (can be use multiple times)
+ -mouseClick <clickParams>   [LEFT|RIGHT],positionX,positionY,numberOfClicks
+ -help                       print this message
+ -list                       list keymappings
 ```
 
 ## Create new release version
@@ -47,6 +46,10 @@ git checkout dev
 ```
 
 # Changelog:
+
+#### v1.07
+
+- Updated mouse click logic to a single command line parameter
 
 #### v1.06
 

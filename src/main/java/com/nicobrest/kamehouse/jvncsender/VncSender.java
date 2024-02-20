@@ -51,27 +51,17 @@ public class VncSender {
   }
 
   /**
-   * Send a left mouse click to the vnc server.
+   * Send a mouse click to the vnc server.
    */
-  public void sendMouseLeftClick(int positionX, int positionY, int clickCount) throws Exception {
-    VncSenderConnection jvnc = new VncSenderConnection(vncHost, vncPort, vncPassword);
-    jvnc.open();
-    logger.info("Sending mouse left click to vnc server {}:{}", vncHost, vncPort);
-    jvnc.mouseLeftClick(positionX, positionY, clickCount);
+  public void sendMouseClick(MouseButton mouseButton, int positionX, int positionY, int clickCount)
+      throws Exception {
+    VncSenderConnection vncSenderConnection = new VncSenderConnection(vncHost, vncPort,
+        vncPassword);
+    vncSenderConnection.open();
+    logger.info("Sending mouse click to vnc server {}:{}", vncHost, vncPort);
+    vncSenderConnection.mouseClick(mouseButton, positionX, positionY, clickCount);
     sleep(vncWaitTime);
-    jvnc.close();
-  }
-
-  /**
-   * Send a right mouse click to the vnc server.
-   */
-  public void sendMouseRightClick(int positionX, int positionY, int clickCount) throws Exception {
-    VncSenderConnection jvnc = new VncSenderConnection(vncHost, vncPort, vncPassword);
-    jvnc.open();
-    logger.info("Sending mouse right click to vnc server {}:{}", vncHost, vncPort);
-    jvnc.mouseRightClick(positionX, positionY, clickCount);
-    sleep(vncWaitTime);
-    jvnc.close();
+    vncSenderConnection.close();
   }
 
   void sleep(int seconds) {
