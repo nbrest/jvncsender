@@ -4,15 +4,15 @@ import java.net.UnknownHostException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-public class VncSenderTest {
+public class VncServerTest {
 
   @Test
   public void sendTextTest() {
     Assertions.assertThrows(
         UnknownHostException.class,
         () -> {
-          VncSender vncSender = new VncSender("invalid-host", 5900, "");
-          vncSender.sendText("madamada");
+          VncServer vncServer = new VncServer("invalid-host", 5900, "");
+          vncServer.sendText("madamada");
         }
     );
   }

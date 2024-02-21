@@ -47,6 +47,10 @@ git checkout dev
 
 # Changelog:
 
+#### v1.08
+
+- Renamed main classes
+
 #### v1.07
 
 - Updated mouse click logic to a single command line parameter

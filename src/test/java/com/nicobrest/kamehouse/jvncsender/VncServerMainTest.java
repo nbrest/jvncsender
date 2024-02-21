@@ -2,7 +2,7 @@ package com.nicobrest.kamehouse.jvncsender;
 
 import org.junit.jupiter.api.Test;
 
-public class VncSenderMainTest {
+public class VncServerMainTest {
 
   @Test
   public void executeVncSenderMainTest() {
@@ -12,6 +12,6 @@ public class VncSenderMainTest {
         "-text", "<ESC>",
         "-password", ""
     };
-    VncSenderMain.main(args);
+    VncServerMain.main(args);
   }
 }

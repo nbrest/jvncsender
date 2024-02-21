@@ -1,5 +1,10 @@
 package com.tightvnc.vncviewer;
 
+/**
+ * VncViewer wrapper used to initialize RfbProtoWrapper.
+ *
+ * @author nbrest
+ */
 public class VncViewerWrapper extends VncViewer {
 
   public VncViewerWrapper(String host, int port, String password) {

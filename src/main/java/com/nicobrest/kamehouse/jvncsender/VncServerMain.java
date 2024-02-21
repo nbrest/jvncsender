@@ -15,9 +15,9 @@ import org.slf4j.LoggerFactory;
 /**
  * Forked from: https://github.com/jsundqvist/jvncsender
  */
-public class VncSenderMain {
+public class VncServerMain {
 
-  private final static Logger logger = LoggerFactory.getLogger(VncSenderMain.class);
+  private final static Logger logger = LoggerFactory.getLogger(VncServerMain.class);
 
   /**
    * @param args
@@ -30,7 +30,7 @@ public class VncSenderMain {
   public static void main(String[] args) {
     try {
       logger.trace("Started executing main jvncsender");
-      VncSenderMain sender = new VncSenderMain();
+      VncServerMain sender = new VncServerMain();
       sender.setupOptions();
       sender.validateArgs(args);
 
@@ -40,10 +40,10 @@ public class VncSenderMain {
       Integer vncPort = Integer.parseInt(sender.cmdLine.getOptionValue("port"));
       String vncMouseClick = sender.cmdLine.getOptionValue("mouseClick");
 
-      VncSender vncSender = new VncSender(vncHost, vncPort, vncPassword);
+      VncServer vncServer = new VncServer(vncHost, vncPort, vncPassword);
 
       if (sender.cmdLine.hasOption("wait")) {
-        vncSender.setVncWaitTime(Integer.parseInt(sender.cmdLine.getOptionValue("wait")));
+        vncServer.setVncWaitTime(Integer.parseInt(sender.cmdLine.getOptionValue("wait")));
       }
 
       if (vncMouseClick != null) {
@@ -52,10 +52,10 @@ public class VncSenderMain {
         int positionX = Integer.parseInt(mouseClickParams[1]);
         int positionY = Integer.parseInt(mouseClickParams[2]);
         int clickCount = Integer.parseInt(mouseClickParams[3]);
-        vncSender.sendMouseClick(mouseButton, positionX, positionY, clickCount);
+        vncServer.sendMouseClick(mouseButton, positionX, positionY, clickCount);
       }
       if (vncText != null) {
-        vncSender.sendText(vncText);
+        vncServer.sendText(vncText);
       }
       logger.trace("Finished executing main jvncsender");
     } catch (Exception e) {

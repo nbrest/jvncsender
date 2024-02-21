@@ -6,7 +6,7 @@
 
   <groupId>be.jedi</groupId>
   <artifactId>jvncsender</artifactId>
-  <version>1.07-SNAPSHOT</version>
+  <version>1.08-SNAPSHOT</version>
   <name>jvncsender</name>
 
   <properties>
@@ -129,7 +129,7 @@
           <archive>
             <manifest>
               <addClasspath>true</addClasspath>
-              <mainClass>com.nicobrest.kamehouse.jvncsender.VncSenderMain</mainClass>
+              <mainClass>com.nicobrest.kamehouse.jvncsender.VncServerMain</mainClass>
             </manifest>
           </archive>
         </configuration>
