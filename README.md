@@ -47,6 +47,10 @@ git checkout dev
 
 # Changelog:
 
+#### v1.09
+
+- Updated logback version
+
 #### v1.08
 
 - Renamed main classes
