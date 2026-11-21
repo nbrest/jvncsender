@@ -10,10 +10,13 @@ COL_RED="\033[1;31m"
 COL_YELLOW="\033[1;33m"
 COL_MESSAGE=${COL_GREEN}
 
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+ROOT_DIR="$(dirname "${SCRIPT_DIR}")"
+
 main() {
   log.info "Started running jvncsender"
-  JVNCSENDER_APP=`ls -1 target/jvncsender-*-jar-with-dependencies.jar`
-  java -jar ${JVNCSENDER_APP} "$@"
+  JVNCSENDER_APP=$(ls -1 "${ROOT_DIR}"/build/libs/jvncsender-*-jar-with-dependencies.jar)
+  java -jar "${JVNCSENDER_APP}" "$@"
   log.info "Finished running jvncsender"
 }
 

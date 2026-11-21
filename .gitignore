@@ -15,6 +15,7 @@ data/**
 # Directories
 # ##################
 **/build/
+.gradle/
 **/bin/
 **/target/
 

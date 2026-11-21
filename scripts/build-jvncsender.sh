@@ -12,14 +12,17 @@ COL_MESSAGE=${COL_GREEN}
 
 SKIP_TESTS=true
 
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+ROOT_DIR="$(dirname "${SCRIPT_DIR}")"
+
 main() {
   parseCmdLineArguments "$@"
   log.info "Started building jvncsender"
   if ${SKIP_TESTS}; then
     log.info "Skipping tests"
-    mvn clean install -Dmaven.test.skip=true
+    "${ROOT_DIR}/gradlew" -p "${ROOT_DIR}" clean build -x test
   else
-    mvn clean install
+    "${ROOT_DIR}/gradlew" -p "${ROOT_DIR}" clean build
   fi
   log.info "Finished building jvncsender"
 }

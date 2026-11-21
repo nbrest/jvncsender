@@ -1,0 +1,33 @@
+import org.gradle.api.initialization.resolve.RepositoriesMode
+
+pluginManagement {
+  repositories {
+    gradlePluginPortal()
+    mavenCentral()
+  }
+}
+
+plugins {
+  // Enables automatic download of missing JDK toolchains from the Foojay
+  // Disco API. Without this, the Java toolchain configured in the build fails to
+  // resolve on machines that only have an older JDK installed.
+  id 'org.gradle.toolchains.foojay-resolver-convention' version '1.0.0'
+}
+
+rootProject.name = 'jvncsender'
+
+dependencyResolutionManagement {
+  repositoriesMode.set(RepositoriesMode.PREFER_PROJECT)
+  repositories {
+    // Local repository with the tightvnc viewer jar
+    maven {
+      name = 'localDependenciesRepository'
+      url = rootDir.toPath().resolve('local-maven-repo').toUri()
+      metadataSources {
+        mavenPom()
+        artifact()
+      }
+    }
+    mavenCentral()
+  }
+}

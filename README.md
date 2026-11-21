@@ -33,7 +33,7 @@ Options:
 
 ## Create new release version
 
-- On `dev` branch update `${RELEASE_VERSION}` in `<version>` in `pom.xml`, commit and push
+- On `dev` branch update `${RELEASE_VERSION}` in `version` in `build.gradle`, commit and push
 - Then run in the command line:
 ```sh
 export RELEASE_VERSION=X.XX
@@ -47,9 +47,15 @@ git checkout dev
 
 # Changelog:
 
+
+#### v1.10
+
+- Moved project from maven to gradle 9
+- Upgraded java version from 17 to 25
+
 #### v1.09
 
-- Updated logback version
+- Updated logback version to 1.4.14
 
 #### v1.08
 
