@@ -6,7 +6,7 @@
 
   <groupId>be.jedi</groupId>
   <artifactId>jvncsender</artifactId>
-  <version>1.08-SNAPSHOT</version>
+  <version>1.09-SNAPSHOT</version>
   <name>jvncsender</name>
 
   <properties>
@@ -31,7 +31,7 @@
     <junit.jupiter.version>5.8.0-M1</junit.jupiter.version>
 
     <!-- Updated : 2023/07 | Dependency version date: 2023/06 -->
-    <logback.version>1.4.8</logback.version>
+    <logback.version>1.4.14</logback.version>
 
     <!-- Updated : 2021/09 | Dependency version date: https://www.tightvnc.com/download-old.php -->
     <tightvnc.vncviewer.version>1.3.10</tightvnc.vncviewer.version>
